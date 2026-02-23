@@ -302,6 +302,197 @@ SMODS.Blind {
         end
     end
 }
+
+SMODS.Blind {
+    key = "pi",
+    dollars = 3,
+    mult = 3,
+    atlas = "blinds",
+    pos = { x = 0, y = 14 },
+    boss = { min = 1 },
+    boss_colour = HEX("48CAE4"),
+    calculate = function(self, blind, context)
+        if not blind.disabled then
+            if context.setting_blind then
+                local handval = 3
+                blind.discards_sub = G.GAME.current_round.discards_left - handval
+                ease_discard(-blind.discards_sub)
+                G.GAME.blind.hands_sub = G.GAME.round_resets.hands - handval
+                ease_hands_played(-G.GAME.blind.hands_sub)
+            end
+        end
+    end,
+    disable = function(self)
+        ease_discard(G.GAME.blind.discards_sub)
+        ease_hands_played(G.GAME.blind.hands_sub)
+    end
+}
+SMODS.Blind {
+    key = "rho",
+    dollars = 5,
+    mult = 2,
+    atlas = "blinds",
+    pos = { x = 0, y = 15 },
+    boss = { min = 2 },
+    boss_colour = HEX("90BE6D"),
+    calculate = function(self, blind, context)
+        if not blind.disabled then
+            if context.stay_flipped and context.to_area == G.hand and GreekBossBlinds.is_rank(context.other_card, {"2", "4", "6", "8", "10"})then
+                return {
+                    stay_flipped = true
+                }
+            end
+        end
+    end,
+    disable = function(self)
+        for i = 1, #G.hand.cards do
+            if G.hand.cards[i].facing == 'back' then
+                G.hand.cards[i]:flip()
+            end
+        end
+        for _, playing_card in pairs(G.playing_cards) do
+            playing_card.ability.wheel_flipped = nil
+        end
+    end
+}
+
+SMODS.Blind {
+    key = "sigma",
+    dollars = 5,
+    mult = 2,
+    atlas = "blinds",
+    pos = { x = 0, y = 16 },
+    boss = { min = 2 },
+    boss_colour = HEX("FFD166"),
+    calculate = function(self, blind, context)
+        if not context.blind_disabled then
+            if context.debuff_hand then
+                local sum = 0
+                for idx, card in ipairs(context.full_hand) do
+                    sum = sum + card:get_id()
+                end
+                local mean = sum/#context.full_hand
+                local stdevsum = 0
+                for idx, card in ipairs(context.full_hand) do
+                    stdevsum = stdevsum + (card:get_id()-mean)^2
+                end
+                return = {
+                    debuff = ((stdevsum)/#context.full_hand)^(1/2) < 3
+                }
+            end
+        end
+    end
+}
+
+SMODS.Blind {
+    key = "tau",
+    dollars = 6,
+    mult = 6,
+    atlas = "blinds",
+    pos = { x = 0, y = 17 },
+    boss = { min = 1 },
+    boss_colour = HEX("F4A261"),
+    calculate = function(self, blind, context)
+        if not blind.disabled then
+            if context.setting_blind then
+                local handval = 6
+                blind.discards_sub = G.GAME.current_round.discards_left - handval
+                ease_discard(-blind.discards_sub)
+                G.GAME.blind.hands_sub = G.GAME.round_resets.hands - handval
+                ease_hands_played(-G.GAME.blind.hands_sub)
+            end
+        end
+    end,
+    disable = function(self)
+        ease_discard(G.GAME.blind.discards_sub)
+        ease_hands_played(G.GAME.blind.hands_sub)
+    end
+}
+
+SMODS.Blind {
+    key = "upsilon",
+    dollars = 5,
+    mult = 2,
+    atlas = "blinds",
+    pos = { x = 0, y = 18 },
+    boss = { min = 1 },
+    boss_colour = HEX("E76F51"),
+    calculate = function(self, blind, context)
+        if not context.blind_disabled then
+            if context.debuff_card and context.debuff_card.area ~= G.jokers and context.debuff_card.suit then
+                suits = {"Hearts", "Diamonds", "Clubs", "Spades"}
+                local suit = pseudorandom_element(suits, "idk")
+                if context.debuff_card.suit == suit then
+                    return {
+                        debuff = true
+                    }
+                end
+            end
+        end
+    end
+}
+
+SMODS.Blind {
+    key = "phi",
+    dollars = 5,
+    mult = 2,
+    atlas = "blinds",
+    pos = { x = 0, y = 19 },
+    boss = { min = 1 },
+    boss_colour = HEX("8D99AE"),
+    calculate = function(self, blind, context)
+        if not blind.disabled then
+            if context.stay_flipped and context.to_area == G.hand and GreekBossBlinds.is_rank(context.other_card, {"4", "6", "7", "9", "10", "Jack", "Queen", "King"})then
+                return {
+                    stay_flipped = true
+                }
+            end
+        end
+    end,
+    disable = function(self)
+        for i = 1, #G.hand.cards do
+            if G.hand.cards[i].facing == 'back' then
+                G.hand.cards[i]:flip()
+            end
+        end
+        for _, playing_card in pairs(G.playing_cards) do
+            playing_card.ability.wheel_flipped = nil
+        end
+    end
+}
+
+SMODS.Blind {
+    key = "chi",
+    dollars = 5,
+    mult = 2,
+    atlas = "blinds",
+    pos = { x = 0, y = 20 },
+    boss = { min = 1 },
+    boss_colour = HEX("6C757D"),
+    calculate = function(self, blind, context)
+        if not context.blind_disabled then
+            if context.debuff_card and context.debuff_card.edition then
+                return {
+                    debuff = true
+                }
+            end
+        end
+    end
+}
+SMODS.Blind {
+    key = "psi",
+    dollars = 5,
+    mult = 2,
+    atlas = "blinds",
+    pos = { x = 0, y = 21 },
+    boss = { min = 1 },
+    boss_colour = HEX("264653"),
+    calculate = function(self, blind, context)
+        if not context.blind_disabled then
+
+        end
+    end
+}
 --[[
 SMODS.Blind {
     key = "",
@@ -312,7 +503,9 @@ SMODS.Blind {
     boss = { min =  },
     boss_colour = HEX(""),
     calculate = function(self, blind, context)
+        if not context.blind_disabled then
 
+        end
     end
 }
 --]]
