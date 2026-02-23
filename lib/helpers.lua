@@ -10,7 +10,7 @@ function GreekBossBlinds.roundToSignificantFigures(num, sf)
     end
 
     -- Calculate the power of 10 representing the magnitude of the number
-    local magnitude = math.floor(math.log10(math.abs(num)))
+    local magnitude = math.floor(math.log(math.abs(num), 10))
 
     -- Calculate the power of 10 needed for the desired significant figures
     local power = (sf - 1) - magnitude

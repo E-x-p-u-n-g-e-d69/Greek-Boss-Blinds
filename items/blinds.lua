@@ -371,13 +371,16 @@ SMODS.Blind {
                 for idx, card in ipairs(context.full_hand) do
                     sum = sum + card:get_id()
                 end
+                print(sum)
                 local mean = sum/#context.full_hand
                 local stdevsum = 0
                 for idx, card in ipairs(context.full_hand) do
                     stdevsum = stdevsum + (card:get_id()-mean)^2
                 end
-                return = {
-                    debuff = ((stdevsum)/#context.full_hand)^(1/2) < 3
+                print(stdevsum)
+                print("Standard Deviation: "..(stdevsum/#context.full_hand)^(1/2))
+                return {
+                    debuff = ((stdevsum)/#context.full_hand)^(1/2) >= 3
                 }
             end
         end
@@ -419,13 +422,17 @@ SMODS.Blind {
     boss_colour = HEX("E76F51"),
     calculate = function(self, blind, context)
         if not context.blind_disabled then
-            if context.debuff_card and context.debuff_card.area ~= G.jokers and context.debuff_card.suit then
-                suits = {"Hearts", "Diamonds", "Clubs", "Spades"}
-                local suit = pseudorandom_element(suits, "idk")
-                if context.debuff_card.suit == suit then
-                    return {
-                        debuff = true
-                    }
+            if context.setting_blind then
+                local suits = {"Hearts", "Diamonds", "Clubs", "Spades"}
+                suit = pseudorandom_element(suits, "idk")
+            end
+            if context.debuff_card then
+                if context.debuff_card.area ~= G.jokers then
+                    if context.debuff_card:is_suit(suit) then
+                        return {
+                            debuff = true
+                        }
+                    end
                 end
             end
         end
@@ -489,7 +496,66 @@ SMODS.Blind {
     boss_colour = HEX("264653"),
     calculate = function(self, blind, context)
         if not context.blind_disabled then
+            if context.modify_ante and context.ante_end then
+                if G.GAME.chips > G.GAME.blind.chips then
+                    return {
+                        modify = 3
+                    }
+                end
+            end
+        end
+    end
+}
 
+SMODS.Blind {
+    key = "epsilon",
+    dollars = 8,
+    mult = 0.5,
+    atlas = "blinds",
+    pos = { x = 0, y = 22 },
+    boss = { min = 1 , showdown = true },
+    boss_colour = HEX("36013F"),
+    calculate = function(self, blind, context)
+        if not context.blind_disabled then
+            if context.setting_blind then
+                ease_discard(-2)
+                ease_hands_played(-2)
+                G.hand:change_size(-2)
+            end
+        end
+    end,
+    disable = function(self)
+        ease_discard(2)
+        ease_hands_played(2)
+        G.hand:change_size(2)
+        G.GAME.blind.chips = G.GAME.blind.chips*4
+        G.GAME.blind.chip_text = G.GAME.blind.chips
+    end,
+    defeat = function(self)
+        if not G.GAME.blind.disabled then
+            ease_discard(2)
+            ease_hands_played(2)
+            G.hand:change_size(2)
+        end
+    end
+}
+
+SMODS.Blind {
+    key = "omega",
+    dollars = 8,
+    mult = 2,
+    atlas = "blinds",
+    pos = { x = 0, y = 23 },
+    boss = { min = 1 , showdown = true },
+    boss_colour = HEX("0096FF"),
+    calculate = function(self, blind, context)
+        if not context.blind_disabled then
+            if context.modify_hand then
+                blind.triggered = true
+                hand_chips = mod_chips(G.GAME.hands[context.scoring_name].s_chips)
+                mult = mod_mult(G.GAME.hands[context.scoring_name].s_mult)
+                update_hand_text({ sound = 'chips2', modded = true }, { level = 1, chips = hand_chips, mult = mult })
+            end
         end
     end
 }
