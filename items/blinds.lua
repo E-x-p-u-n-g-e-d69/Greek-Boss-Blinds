@@ -152,7 +152,7 @@ SMODS.Blind {
     mult = 2,
     atlas = "blinds",
     pos = { x = 0, y = 7 },
-    boss = { min = 1 },
+    boss = { min = 2 },
     boss_colour = HEX("7209B7"),
     calculate = function(self, blind, context)
         if not context.blind_disabled then
@@ -171,7 +171,7 @@ SMODS.Blind {
     mult = 2,
     atlas = "blinds",
     pos = { x = 0, y = 8 },
-    boss = { min = 1 },
+    boss = { min = 2 },
     boss_colour = HEX("B5179E"),
     calculate = function(self, blind, context)
         if not context.blind_disabled then
@@ -309,7 +309,7 @@ SMODS.Blind {
     mult = 3,
     atlas = "blinds",
     pos = { x = 0, y = 14 },
-    boss = { min = 1 },
+    boss = { min = 2 },
     boss_colour = HEX("48CAE4"),
     calculate = function(self, blind, context)
         if not blind.disabled then
@@ -393,7 +393,7 @@ SMODS.Blind {
     mult = 6,
     atlas = "blinds",
     pos = { x = 0, y = 17 },
-    boss = { min = 1 },
+    boss = { min = 3 },
     boss_colour = HEX("F4A261"),
     calculate = function(self, blind, context)
         if not blind.disabled then
@@ -445,7 +445,7 @@ SMODS.Blind {
     mult = 2,
     atlas = "blinds",
     pos = { x = 0, y = 19 },
-    boss = { min = 1 },
+    boss = { min = 2 },
     boss_colour = HEX("8D99AE"),
     calculate = function(self, blind, context)
         if not blind.disabled then
