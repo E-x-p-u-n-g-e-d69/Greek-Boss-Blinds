@@ -1,7 +1,7 @@
 # Greek Boss Blinds
 A mod that adds 24 unique boss blinds based on the Greek alphabet.
 ## Install Instructions
-1. Get Steamodded from [here](https://github.com/Steamodded/smods) and put it in your Mods directory
+1. Get Steamodded from [here](https://github.com/Steamodded/smods) and put it in your Mods directory.
 2. Download the source code of this mod as a .zip.
 3. Extract into Mods.
 ### Dev Comments
