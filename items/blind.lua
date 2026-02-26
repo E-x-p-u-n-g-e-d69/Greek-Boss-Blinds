@@ -103,7 +103,7 @@ SMODS.Blind {
             end
             if context.hand_drawn then
                 for idx, card in ipairs(G.hand.cards) do
-                    card:set_debuff(true)
+                    card:set_debuff(false)
                 end
             end
         end
@@ -142,6 +142,9 @@ SMODS.Blind {
         end
     end,
     disable = function (self)
+        SMODS.change_discard_limit(2)
+    end,
+    defeat = function (self)
         SMODS.change_discard_limit(2)
     end
 }
@@ -494,12 +497,20 @@ SMODS.Blind {
     pos = { x = 0, y = 21 },
     boss = { min = 1 },
     boss_colour = HEX("264653"),
+    loc_vars = function (self)
+        return {
+            vars = {
+                math.min( G.GAME.win_ante - G.GAME.round_resets.ante, 3)
+            }
+        }        
+    end,
     calculate = function(self, blind, context)
         if not context.blind_disabled then
             if context.modify_ante and context.ante_end then
+                local modify = math.min( G.GAME.win_ante - G.GAME.round_resets.ante, 3)
                 if G.GAME.chips > G.GAME.blind.chips then
                     return {
-                        modify = 3
+                        modify = modify
                     }
                 end
             end
