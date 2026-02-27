@@ -154,7 +154,7 @@ return {
                 name = "The Psi",
                 text = {
                     "If score >2x Blind score",
-                    "increase Ante by 3"
+                    "increase Ante by #1#"
                 }
             },
             bl_greek_epsilon = {
