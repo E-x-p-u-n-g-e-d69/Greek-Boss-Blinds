@@ -374,14 +374,11 @@ SMODS.Blind {
                 for idx, card in ipairs(context.full_hand) do
                     sum = sum + card:get_id()
                 end
-                print(sum)
                 local mean = sum/#context.full_hand
                 local stdevsum = 0
                 for idx, card in ipairs(context.full_hand) do
                     stdevsum = stdevsum + (card:get_id()-mean)^2
                 end
-                print(stdevsum)
-                print("Standard Deviation: "..(stdevsum/#context.full_hand)^(1/2))
                 return {
                     debuff = ((stdevsum)/#context.full_hand)^(1/2) >= 3
                 }
