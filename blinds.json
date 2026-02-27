@@ -6,7 +6,7 @@
 	"prefix": "greek",
 	"main_file": "main.lua",
 	"priority": 0,
-	"version": "0.0.1~ALPHA",
+	"version": "0.0.2~ALPHA",
 	"dependencies": [
         "Steamodded (>=1.0.0~)"
     ]
