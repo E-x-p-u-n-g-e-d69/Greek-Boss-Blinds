@@ -172,5 +172,10 @@ return {
                 }
             }
         }
+    },
+    misc = {
+        dictionary = {
+            ph_greek_upto3 = "[up to 3]"
+        }
     }
 }

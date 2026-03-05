@@ -181,7 +181,7 @@ SMODS.Blind {
             if context.initial_scoring_step then
                 suits = {"Hearts", "Diamonds", "Clubs", "Spades"}
                 for idx, card in ipairs(context.full_hand) do
-                    local suit = pseudorandom_element(suits, "idk")
+                    local suit = pseudorandom_element(suits)
                     SMODS.change_base(card, suit)
                 end
             end
@@ -424,7 +424,7 @@ SMODS.Blind {
         if not context.blind_disabled then
             if context.setting_blind then
                 local suits = {"Hearts", "Diamonds", "Clubs", "Spades"}
-                suit = pseudorandom_element(suits, "idk")
+                suit = pseudorandom_element(suits)
             end
             if context.debuff_card then
                 if context.debuff_card.area ~= G.jokers then
@@ -497,14 +497,21 @@ SMODS.Blind {
     loc_vars = function (self)
         return {
             vars = {
-                math.min( G.GAME.win_ante - G.GAME.round_resets.ante, 3)
+                math.min( G.GAME.win_ante - (G.GAME.round_resets.ante % 8), 3) or 3
             }
         }        
+    end,
+    collection_loc_vars = function (self)
+        return {
+            vars = {
+                localize("ph_greek_upto3")
+            }
+        }
     end,
     calculate = function(self, blind, context)
         if not context.blind_disabled then
             if context.modify_ante and context.ante_end then
-                local modify = math.min( G.GAME.win_ante - G.GAME.round_resets.ante, 3)
+                local modify = math.min( G.GAME.win_ante - (G.GAME.round_resets.ante % 8), 3)
                 if G.GAME.chips > G.GAME.blind.chips then
                     return {
                         modify = modify
