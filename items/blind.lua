@@ -6,7 +6,29 @@ SMODS.Atlas({
 	py = 34,
 	frames = 21,
 })
-
+SMODS.Shader {
+    key = "irradiated",
+    path = "Irradiation.fs"
+}
+SMODS.Edition {
+    key = "irradiated",
+    shader = "irradiated",
+    config = {x_mult = 0.8, x_chips = 0.8},
+    in_shop = false,
+    weight = 0,
+    extra_cost = -10,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.edition.x_mult, card.edition.x_chips } }
+    end,
+    calculate = function(self, card, context)
+        if context.post_joker or (context.main_scoring and context.cardarea == G.play) then
+            return {
+                x_mult = card.edition.x_mult,
+                x_chips = card.edition.x_chips
+            }
+        end
+    end
+}
 SMODS.Blind {
     key = "alpha",
     dollars = 5,
@@ -54,8 +76,10 @@ SMODS.Blind {
     boss_colour = HEX("FCBF49"),
     calculate = function(self, blind, context)
         if not blind.disabled then
-            if context.press_play then
-                ease_dollars(-3)
+            if context.blind_defeated then
+                local chosen_joker = pseudorandom_element(G.jokers.cards)
+                chosen_joker:set_edition("e_greek_irradiated")
+                blind:wiggle()
             end
         end
     end
@@ -100,8 +124,9 @@ SMODS.Blind {
                 for idx, card in ipairs(G.hand.cards) do
                     card:set_debuff(true)
                 end
+                blind:wiggle()
             end
-            if context.hand_drawn then
+            if context.drawing_cards then
                 for idx, card in ipairs(G.hand.cards) do
                     card:set_debuff(false)
                 end
@@ -166,6 +191,7 @@ SMODS.Blind {
                 for idx, card in ipairs(context.full_hand) do
                     SMODS.change_base(card, card.suit, ranks[card:get_id()-1])
                 end
+                blind:wiggle()
             end
         end
     end
@@ -186,6 +212,7 @@ SMODS.Blind {
                     local suit = pseudorandom_element(suits)
                     SMODS.change_base(card, suit)
                 end
+                blind:wiggle()
             end
         end
     end
@@ -272,8 +299,9 @@ SMODS.Blind {
     boss_colour = HEX("5E60CE"),
     calculate = function(self, blind, context)
         if not blind.disabled then
-            if context.pre_discard then
+            if context.press_play then
                 ease_dollars(-3)
+                blind:wiggle()
             end
         end
     end
@@ -422,7 +450,15 @@ SMODS.Blind {
     pos = { x = 0, y = 18 },
     boss = { min = 1 },
     boss_colour = HEX("E76F51"),
-    debuff = pseudorandom_element({"Hearts", "Diamonds", "Clubs", "Spades"})
+    calculate = function(self, blind, context)
+        if not blind.disabled then
+            if context.debuff_card and context.debuff_card.area ~= G.jokers and not context.debuff_card.ability.played_this_ante then
+                return {
+                    debuff = true
+                }
+            end
+        end
+    end
 }
 
 SMODS.Blind {
@@ -499,6 +535,7 @@ SMODS.Blind {
             if context.modify_ante and context.ante_end then
                 local modify = math.min( G.GAME.win_ante - (G.GAME.round_resets.ante % 8), 3)
                 if G.GAME.chips > G.GAME.blind.chips and not blind.disabled then
+                    blind:wiggle()
                     return {
                         modify = modify
                     }
@@ -511,7 +548,7 @@ SMODS.Blind {
 SMODS.Blind {
     key = "epsilon",
     dollars = 8,
-    mult = 0.5,
+    mult = 2,
     atlas = "blinds",
     pos = { x = 0, y = 22 },
     boss = { min = 1 , showdown = true },
@@ -553,9 +590,9 @@ SMODS.Blind {
         if not blind.disabled then
             if context.modify_hand then
                 blind.triggered = true
-                hand_chips = mod_chips(G.GAME.hands[context.scoring_name].s_chips)
-                mult = mod_mult(G.GAME.hands[context.scoring_name].s_mult)
-                update_hand_text({ sound = 'chips2', modded = true }, { level = 1, chips = hand_chips, mult = mult })
+                hand_chips = mod_chips(G.GAME.hands[context.scoring_name].s_chips-G.GAME.hands[context.scoring_name].l_chips*2)
+                mult = mod_mult(G.GAME.hands[context.scoring_name].s_mult-G.GAME.hands[context.scoring_name].l_mult*2)
+                update_hand_text({ sound = 'chips2', modded = true }, { level = -1, chips = hand_chips, mult = mult })
             end
         end
     end

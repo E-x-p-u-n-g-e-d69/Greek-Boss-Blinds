@@ -18,8 +18,9 @@ return {
             bl_greek_gamma = {
                 name = "The Gamma",
                 text = {
-                    "Lose three dollars",
-                    "every hand played"
+                    "When defeated,",
+                    "add Irradiated to",
+                    "a random Joker"
                 }
             },
             bl_greek_delta = {
@@ -68,7 +69,8 @@ return {
                 name = "The Lambda",
                 text = {
                     "Cards of a rank",
-                    "already played are debuffed"
+                    "already played this round",
+                    "are debuffed"
                 }
             },
             bl_greek_mu = {
@@ -81,7 +83,7 @@ return {
             bl_greek_nu = {
                 name = "The Nu",
                 text = {
-                    "Subtract the number of",
+                    "Subtract half the number of",
                     "times this hand has been played",
                     "from Base Mult"
                 }
@@ -89,7 +91,7 @@ return {
             bl_greek_xi = {
                 name = "The Xi",
                 text = {
-                    "Lose $3 per Discard"
+                    "Lose $3 every Hand"
                 }
             },
             bl_greek_omicron = {
@@ -133,7 +135,9 @@ return {
             bl_greek_upsilon = {
                 name = "The Upsilon",
                 text = {
-                    "Debuffs a random suit",
+                    "Cards not played",
+                    "previously this Ante",
+                    "are debuffed"
                 }
             },
             bl_greek_phi = {
@@ -167,8 +171,18 @@ return {
             bl_greek_omega = {
                 name = "The Omega",
                 text = {
-                    "Played hand's level",
-                    "is reduced to 1"
+                    "Played hand's",
+                    "effective level",
+                    "is reduced to -1"
+                }
+            }
+        },
+        Edition = {
+            e_greek_irradiated = {
+                name = "Irradiated",
+                text = {
+                    "{X:mult,C:white}X#1#{} Mult",
+                    "{X:chips,C:white}X#1#{} Chips",
                 }
             }
         }
