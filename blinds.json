@@ -6,8 +6,10 @@
 	"prefix": "greek",
 	"main_file": "main.lua",
 	"priority": 0,
-	"version": "0.0.4~ALPHA",
+	"version": "0.1.0~BETA",
 	"dependencies": [
-        "Steamodded (>=1.0.0~)"
-    ]
+        "Steamodded (>=1.0.0~)",
+		"Amulet (>=3.5.1)"
+    ],
+	"conflicts": [ "Talisman (<=2.7)" ]
 }
